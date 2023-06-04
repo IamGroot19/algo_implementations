@@ -193,22 +193,24 @@ func generateServerCombos(serverList []string, shardSize int) [][]string {
 		if len(curServerCombo) == shardSize {
 			// make a copy of current combination
 			dst := make([]string, shardSize)
+
+			// we do an explicit copy here so that dst & curServerCombo have differnet underlying arrays for their slices (so that any future change to curServerCombo wont affect to dst)
 			copy(dst, curServerCombo)
+
 			// fmt.Printf("\nAnother shard found: %v\n", dst)
 			result = append(result, dst)
 			return
 		}
 
-		// Traverse along array & pick `shardSize` amt of servers
+		// Traverse along array & pick servers to construct each combination in nCr
 		for i := start; i < len(serverList); i++ {
 			curServerCombo = append(curServerCombo, serverList[i])
 			util_nCr(i+1, curServerCombo)
 			curServerCombo = curServerCombo[:len(curServerCombo)-1] // pop last element
 		}
-		return
 	}
 
-	util_nCr(1, make([]string, 0))
+	util_nCr(0, make([]string, 0))
 	fmt.Println("Total number of shards: ", len(result))
 	// fmt.Printf("\nFinal ShardList: %v", result)
 
