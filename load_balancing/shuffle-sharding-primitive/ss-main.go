@@ -221,7 +221,7 @@ func generateServerCombos(serverList []string, shardSize int) [][]string {
 func (sp *ShardPool) initialiseShardPool(serverList []string, shardSize int) {
 	result := generateServerCombos(serverList, shardSize)
 
-	fmt.Println("\nshard combos: ", result)
+	// fmt.Println("\nshard combos: ", result)
 	for _, shard := range result {
 		fmt.Println(shard)
 		var s Shard
@@ -356,7 +356,7 @@ func main() {
 		log.Fatal("Pls provide a shardSize > 1")
 	}
 	serverList = strings.Split(backends, ",")
-	fmt.Printf("\nLength: %d, Server list: %v\n", len(serverList), serverList)
+	// fmt.Printf("\nLength: %d, Server list: %v\n", len(serverList), serverList)
 
 	(&serverShardPool).initialiseShardPool(serverList, shardSize)
 
@@ -375,19 +375,6 @@ func main() {
 
 }
 
-/*
-	Things pending:
-	- need to add healthcheck functions around shard
-	  - Figure out how to mark servers as unhealthy
-	  - you will 2 healthchecks: a) Overall shardHealth b) Healthcheck for each serve in a shard
 
-	- Need to add round-robin mechanism within each shard
 
-	- Overall testing with these basic things in mind
-
-	- ZoneAware ShardPool Generation:
-	  - Dont hardcode logic based on fixed number of zones. Input n servers, r shardsize, x zones, y skewness from user and check for the constraint of floor(r/x) < y for each zone for each shard.
-	  - Skewness in Zone aware shardpool initialisation.
-	  - [decide if you need this]
-*/
 
